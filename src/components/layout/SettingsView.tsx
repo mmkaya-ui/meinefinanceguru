@@ -1,12 +1,12 @@
 import { useRef } from "react";
 import { useApp } from "../../context/AppContext";
 import { t } from "../../utils/i18n";
-import { Download, Upload, Lock, RefreshCcw } from "lucide-react";
+import { Download, Upload, Lock, RefreshCcw, ExternalLink, Globe } from "lucide-react";
 import { motion } from "framer-motion";
 import { sampleDemoFinancialData } from "../../utils/demoData";
 
 export function SettingsView() {
-  const { lang, apiSecret, setApiSecret, data, setData, setIsUnlocked } = useApp();
+  const { lang, setLang, apiSecret, setApiSecret, data, setData, setIsUnlocked } = useApp();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleBackup = () => {
@@ -54,10 +54,55 @@ export function SettingsView() {
         <p className="text-slate-400">{t("Configure AI keys, import/export data, and security preferences.", lang)}</p>
       </div>
 
-      <div className="glass-panel rounded-2xl p-8">
-        <h3 className="text-xl font-bold text-white mb-4">{t("API Authentication", lang)}</h3>
-        <p className="text-slate-400 text-sm mb-4">
-          {t("Enter your Gemini API key to enable statement parsing and Ask AI features. Stored strictly in your browser's local storage.", lang)}
+      {/* Language Selector */}
+      <div className="glass-panel rounded-2xl p-6">
+        <div className="flex items-center gap-2 mb-3">
+          <Globe className="w-5 h-5 text-emerald-400" />
+          <h3 className="text-lg font-bold text-white">{t("Language & Region", lang)}</h3>
+        </div>
+        <p className="text-slate-400 text-xs mb-4">
+          {t("Select your preferred interface and AI reporting language.", lang)}
+        </p>
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { code: "en", label: "English 🇬🇧" },
+            { code: "de", label: "Deutsch 🇩🇪" },
+            { code: "tr", label: "Türkçe 🇹🇷" }
+          ].map(item => (
+            <button
+              key={item.code}
+              onClick={() => {
+                setLang(item.code as any);
+                localStorage.setItem("mfg_lang", item.code);
+              }}
+              className={`py-2.5 px-3 rounded-xl text-xs font-semibold transition-all border ${
+                lang === item.code
+                  ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-sm"
+                  : "bg-slate-900/50 text-slate-400 border-slate-800 hover:text-white hover:bg-slate-800/50"
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* BYOK Authentication */}
+      <div className="glass-panel rounded-2xl p-6">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-lg font-bold text-white">{t("BYOK: Google Gemini API Key", lang)}</h3>
+          <a 
+            href="https://aistudio.google.com/app/apikey" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-xs text-sky-400 hover:text-sky-300 flex items-center gap-1 font-medium"
+          >
+            <span>Get Free Key</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
+        <p className="text-slate-400 text-xs mb-4 leading-relaxed">
+          {t("Your API key is stored 100% locally in your browser's localStorage and enables client-side statement parsing and Ask AI. Never sent to any central server.", lang)}
         </p>
         <div className="flex flex-col gap-2">
           <input 
@@ -67,15 +112,21 @@ export function SettingsView() {
               setApiSecret(e.target.value);
               localStorage.setItem("mfg_apikey", e.target.value);
             }}
-            placeholder={t("Enter API Secret...", lang)}
-            className="bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition-all w-full text-sm font-mono"
+            placeholder="AIzaSy..."
+            className="bg-slate-900/60 border border-slate-700/80 rounded-xl px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition-all w-full text-xs font-mono"
           />
+          {apiSecret && (
+            <p className="text-[11px] text-emerald-400 flex items-center gap-1.5 mt-1 font-medium">
+              <span>✓ API Key stored securely in browser.</span>
+            </p>
+          )}
         </div>
       </div>
       
-      <div className="glass-panel rounded-2xl p-8">
-        <h3 className="text-xl font-bold text-white mb-2">{t("Data Management", lang)}</h3>
-        <p className="text-slate-400 text-sm mb-6">{t("Export a complete backup or import your personal JSON dataset.", lang)}</p>
+      {/* Data Management */}
+      <div className="glass-panel rounded-2xl p-6">
+        <h3 className="text-lg font-bold text-white mb-2">{t("Data Management", lang)}</h3>
+        <p className="text-slate-400 text-xs mb-6">{t("Export a complete backup or import your personal JSON dataset.", lang)}</p>
         
         <input 
           type="file" 
@@ -85,10 +136,10 @@ export function SettingsView() {
           className="hidden" 
         />
 
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col sm:flex-row gap-3">
           <button 
             onClick={handleBackup} 
-            className="bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/50 text-emerald-400 px-5 py-3 rounded-xl flex items-center justify-center gap-2 font-semibold transition-colors text-sm"
+            className="bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/50 text-emerald-400 px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 font-semibold transition-colors text-xs"
           >
             <Download className="w-4 h-4" />
             {t("Download Backup", lang)}
@@ -96,14 +147,14 @@ export function SettingsView() {
 
           <button 
             onClick={() => fileInputRef.current?.click()} 
-            className="bg-sky-500/20 hover:bg-sky-500/30 border border-sky-500/50 text-sky-300 px-5 py-3 rounded-xl flex items-center justify-center gap-2 font-semibold transition-colors text-sm"
+            className="bg-sky-500/20 hover:bg-sky-500/30 border border-sky-500/50 text-sky-300 px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 font-semibold transition-colors text-xs"
           >
             <Upload className="w-4 h-4" />
             {t("Import Backup", lang)}
           </button>
         </div>
 
-        <div className="border-t border-slate-800/80 mt-6 pt-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
+        <div className="border-t border-slate-800/80 mt-6 pt-5 flex flex-col sm:flex-row gap-4 items-center justify-between">
           <button 
             onClick={handleLoadDemo} 
             className="text-slate-400 hover:text-slate-200 text-xs flex items-center gap-1.5 transition-colors"

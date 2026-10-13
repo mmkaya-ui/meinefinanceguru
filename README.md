@@ -41,12 +41,17 @@
   - **JSON Backup & Restore:** Export and import your entire financial state with a single click.
   - **Start Fresh:** Initialize an empty vault and populate it over time.
 
-- **🤖 AI Financial Intelligence:**
-  - Ask natural language questions about your budget, leaks, and optimization strategies.
-  - Client-side document parsing with Google Gemini support.
+- **🔑 BYOK (Bring Your Own Key) Architecture:**
+  - Zero server dependency: simply plug in your free Google Gemini API key in Settings.
+  - Key is stored exclusively in your browser's `localStorage` and never saved to any database.
+
+- **🤖 Universal Semantic AI Parser:**
+  - Drop statements in **PDF, CSV, TSV, TXT, or JSON** from ANY bank worldwide (Sparkasse, Deutsche Bank, N26, Revolut, Garanti, İş Bankası, Chase, BoA, etc.).
+  - Semantically understands dates, credit/debit indicators (*Haben/Soll*, *Alacak/Borç*, *Credit/Debit*), and auto-categorizes expenses into normalized buckets.
+  - Client-side PII scrubber automatically redacts IBANs, phone numbers, emails, and street addresses before AI analysis.
 
 - **🌐 Tri-Lingual Support:**
-  - Full interface translation in **English**, **Deutsch**, and **Türkçe**.
+  - Full instant interface translation in **English 🇬🇧**, **Deutsch 🇩🇪**, and **Türkçe 🇹🇷**, switchable from the lock screen, navigation bar, or settings.
 
 ---
 

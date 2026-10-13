@@ -6,7 +6,7 @@ import { decryptPayload } from "../../utils/crypto";
 import { sampleDemoFinancialData, emptyFinancialData } from "../../utils/demoData";
 
 export function PinScreen() {
-  const { lang, setData, setIsUnlocked, loading, setLoading, error, setError } = useApp();
+  const { lang, setLang, setData, setIsUnlocked, loading, setLoading, error, setError } = useApp();
   const [password, setPassword] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -65,9 +65,30 @@ export function PinScreen() {
           <Lock className="w-48 h-48 text-emerald-400" />
         </div>
         <div className="relative z-10">
-          <div className="w-16 h-16 bg-slate-800/80 rounded-2xl flex items-center justify-center mb-6 border border-slate-700/50 shadow-inner">
-            <Lock className="w-8 h-8 text-emerald-400" />
+          <div className="flex items-center justify-between mb-6">
+            <div className="w-14 h-14 bg-slate-800/80 rounded-2xl flex items-center justify-center border border-slate-700/50 shadow-inner">
+              <Lock className="w-7 h-7 text-emerald-400" />
+            </div>
+            {/* Language Switcher */}
+            <div className="flex gap-1.5 bg-slate-900/60 p-1 rounded-xl border border-slate-800">
+              {(["de", "en", "tr"] as const).map(l => (
+                <button
+                  key={l}
+                  type="button"
+                  onClick={() => {
+                    setLang(l);
+                    localStorage.setItem("mfg_lang", l);
+                  }}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold uppercase transition-colors ${
+                    lang === l ? "bg-emerald-500 text-slate-950 shadow-sm" : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  {l}
+                </button>
+              ))}
+            </div>
           </div>
+
           <h2 className="text-3xl font-bold text-white mb-2 tracking-tight">{t("Vault Locked", lang)}</h2>
           <p className="text-slate-400 mb-6 text-sm">{t("Enter your master PIN to decrypt your financial vault, or import your personal backup.", lang)}</p>
           
