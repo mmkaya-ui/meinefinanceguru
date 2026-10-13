@@ -123,6 +123,28 @@ export function SettingsView() {
         </div>
       </div>
       
+      {/* Documentation & User Manual */}
+      <div className="glass-panel rounded-2xl p-6">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">📘</span>
+            <h3 className="text-lg font-bold text-white">{t("User Manual & Documentation", lang)}</h3>
+          </div>
+          <a
+            href="https://github.com/mmkaya-ui/meinefinanceguru/blob/main/USER_MANUAL.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-medium bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/20 transition-colors"
+          >
+            <span>{t("Open Guide", lang)}</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
+        <p className="text-slate-400 text-xs leading-relaxed">
+          {t("Learn how to decrypt your vault, import bank statements (PDF, CSV, TXT), set up free Gemini AI, and track your wealth.", lang)}
+        </p>
+      </div>
+
       {/* Data Management */}
       <div className="glass-panel rounded-2xl p-6">
         <h3 className="text-lg font-bold text-white mb-2">{t("Data Management", lang)}</h3>

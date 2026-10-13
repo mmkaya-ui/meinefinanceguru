@@ -9,6 +9,8 @@
 [![PWA Ready](https://img.shields.io/badge/PWA-Serwist-emerald)](https://serwist.pages.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
+[📖 **Read the Complete User Manual & Setup Guide →**](USER_MANUAL.md)
+
 ---
 
 ## 🌟 Overview
